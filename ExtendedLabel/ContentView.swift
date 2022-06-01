@@ -12,6 +12,7 @@ let html = """
     <p>You can create an NSAttributedString directly from <a href="http://citadele.lv">HTML</a>, including support for a wide <i>range of formatting</i>, using a special <u>initializer</u> and passing in <b>NSAttributedString.DocumentType.html</b> for your document\n<a href="http://maxkalik.com">some link</a> type.</p>
 """
 
+
 struct ContentView: View {
     var body: some View {
         ZStack(alignment: .bottom) {

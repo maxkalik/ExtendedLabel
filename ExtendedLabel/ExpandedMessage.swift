@@ -15,29 +15,20 @@ struct ExpandedMessageView: View {
 
     @Environment(\.openURL) var openURL
     @State private var isExpanded: Bool = false
-    @State var textHeight: CGFloat = 30
+    @State private var height: CGFloat = .zero
 
     var body: some View {
         VStack(spacing: 0) {
             HStack {
                 VStack(alignment: .leading) {
-                    ZStack(alignment: .center) {
-                        Text(.init(text.stripOutHtml()))
-                            .font(.system(size: 13))
-                            .lineLimit(isExpanded ? 50 : 2)
-                            .readSize { size in
-                                withAnimation {
-                                    textHeight = size.height + 20
-                                }
-                            }
-                            .opacity(0.5)
-                        BalanceWarningAttributedLabelView(
-                            html: text
-                        ) { url in
-                            openURL(url)
-                        }
-                        .frame(height: isExpanded ? textHeight : 30)
+                    
+                    AttributedLabelView(html: text, dynamicHeight: $height) { url in
+                        print(url)
                     }
+                    .textFontSize(16)
+                    .textColor(.darkGray)
+                    .textAlignment(.center)
+                    .frame(height: isExpanded ? height : 30)
 
                     HStack {
                         Button {
@@ -56,6 +47,7 @@ struct ExpandedMessageView: View {
                         .buttonStyle(.plain)
                     }
                 }
+                
 
                 Spacer()
                 Button { closeAction() } label: {

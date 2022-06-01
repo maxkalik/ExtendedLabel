@@ -119,12 +119,19 @@ public extension UIFont {
 
 extension String {
     func stripOutHtml() -> String {
+        print("*****", self, self.isHtml)
         let string = self.replacingOccurrences(of: "<br>", with: "\n")
+        
+        
         return string.replacingOccurrences(
             of: "<[^>]+>",
             with: "",
             options: .regularExpression,
             range: nil
         )
+    }
+    
+    var isHtml: Bool {
+        self.range(of: "<(\"[^\"]*\"|'[^']*'|[^'\">])*>", options: .regularExpression) != nil
     }
 }

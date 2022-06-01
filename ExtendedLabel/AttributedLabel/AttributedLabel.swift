@@ -11,7 +11,8 @@ class AttributedLabel: UILabel {
     private var tapGesture = UITapGestureRecognizer()
     private var links: [AttributedLabelLink] = []
 
-    var textFontSize: CGFloat = 16
+    var textFontSize: CGFloat = 13
+    var linkColor: UIColor = UIColor.blue
     var action: ((URL?) -> Void)?
 
     var html: String? {
@@ -53,10 +54,10 @@ class AttributedLabel: UILabel {
                         ]
 
                         var linkAttributes = defaultAttributes
-                        linkAttributes[.foregroundColor] = UIColor.blue
+                        linkAttributes[.foregroundColor] = self.linkColor
 
                         var linkActiveAttributes = defaultAttributes
-                        linkActiveAttributes[.foregroundColor] = UIColor.blue.withAlphaComponent(0.6)
+                        linkActiveAttributes[.foregroundColor] = self.linkColor.withAlphaComponent(0.6)
 
                         if let link = attributes[.link], let url = link as? URL {
                             let attributedLink = AttributedTextWithLink(
@@ -207,7 +208,6 @@ extension AttributedLabel {
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("*****")
         guard let touchPoint = touches.first?.location(in: self),
               let link = getLinkAtPoint(touchPoint) else { return }
         setupAttributes(of: link)
