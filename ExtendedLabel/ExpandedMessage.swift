@@ -1,9 +1,4 @@
-//
-//  ExpandedMessage.swift
-//  ExtendedLabel
-//
 //  Created by Maksim Kalik on 26/05/2022.
-//
 
 import SwiftUI
 

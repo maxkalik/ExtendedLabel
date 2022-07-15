@@ -1,4 +1,4 @@
-//  Copyright © 2021 AS "Citadele Banka". All rights reserved.
+//  Created by Maksim Kalik on 26/05/2022.
 
 import UIKit
 
@@ -84,7 +84,7 @@ class UniversalLabel: UILabel {
                         }
                     }
 
-                    AttributedTextHelper.concat(textsWithLinks: universalLabelLinks, on: self)
+                    self.concat(textsWithLinks: universalLabelLinks)
                 }
             }
         }
@@ -108,12 +108,42 @@ class UniversalLabel: UILabel {
 // MARK: - Add Link
 
 extension UniversalLabel {
-    func addLink(_ linkAttributes: UniversalLabelLink) {
+    func addLink(_ universalLabelLink: UniversalLabelLink) {
         guard let attributedString = self.attributedText else { return }
         let attributedText = NSMutableAttributedString(attributedString: attributedString)
-        attributedText.addAttributes(linkAttributes.attributes, range: linkAttributes.textCheckingResult.range)
+        attributedText.addAttributes(
+            universalLabelLink.linkAttributes.attributes,
+            range: universalLabelLink.textCheckingResult.range
+        )
         self.attributedText = attributedText
-        links.append(linkAttributes)
+        links.append(universalLabelLink)
+    }
+    
+    func concat(textsWithLinks: [AttributedTextWithLink]) {
+        let attributedText = NSMutableAttributedString(string: "")
+        var labelLinks = [UniversalLabelLink]()
+
+        textsWithLinks.forEach {
+            attributedText.append(NSAttributedString(
+                string: $0.text,
+                attributes: $0.attributes)
+            )
+
+            if let link = $0.link,
+               let url = URL(string: link),
+               let linkAttributes = $0.linkAttributes {
+
+                let range = (attributedText.string as NSString).range(of: $0.text)
+                let labelLink = UniversalLabelLink(
+                    linkAttributes: linkAttributes,
+                    textCheckingResult: .linkCheckingResult(range: range, url: url)
+                )
+                labelLinks.append(labelLink)
+            }
+        }
+
+        self.attributedText = attributedText
+        labelLinks.forEach { addLink($0) }
     }
 }
 
@@ -132,16 +162,17 @@ private extension UniversalLabel {
     }
 
     func setupAttributes(of link: UniversalLabelLink) {
-        guard let attributedString = self.attributedText else { return }
-        let attributedText = NSMutableAttributedString(attributedString: attributedString)
-        attributedText.addAttributes(link.attributes, range: link.textCheckingResult.range)
-        self.attributedText = attributedText
+        setupAttributes(link.linkAttributes.attributes, range: link.textCheckingResult.range)
     }
 
     func setupActiveAttributes(of link: UniversalLabelLink) {
+        setupAttributes(link.linkAttributes.activeAttributes, range: link.textCheckingResult.range)
+    }
+    
+    private func setupAttributes(_ attributes: [NSAttributedString.Key : Any], range: NSRange) {
         guard let attributedString = self.attributedText else { return }
-        let attributedText = NSMutableAttributedString(attributedString: attributedString)
-        attributedText.addAttributes(link.activeAttributes, range: link.textCheckingResult.range)
+        let mutableAttributedString = NSMutableAttributedString(attributedString: attributedString)
+        mutableAttributedString.addAttributes(attributes, range: range)
         self.attributedText = attributedText
     }
 }
@@ -202,22 +233,12 @@ extension UniversalLabel {
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-//        guard let touchPoint = touches.first?.location(in: self),
-//              let link = getLinkAtPoint(touchPoint) else { return }
-//        setupAttributes(of: link)
-        links.forEach {
-            setupAttributes(of: $0)
-        }
+        links.forEach { setupAttributes(of: $0) }
         super.touchesEnded(touches, with: event)
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        guard let touchPoint = touches.first?.location(in: self),
-//              let link = getLinkAtPoint(touchPoint) else { return }
         links.forEach { setupAttributes(of: $0) }
-
-//        setupAttributes(of: link)
         super.touchesCancelled(touches, with: event)
     }
 }

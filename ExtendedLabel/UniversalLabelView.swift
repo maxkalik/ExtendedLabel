@@ -1,9 +1,4 @@
-//
-//  ExtendedLabelView.swift
-//  ExtendedLabel
-//
 //  Created by Maksim Kalik on 26/05/2022.
-//
 
 import UIKit
 import SwiftUI
@@ -37,10 +32,6 @@ struct UniversalLabelView: UIViewRepresentable {
         
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-        
-//        if label.numberOfLines != .zero {
-//            label.setContentHuggingPriority(.required, for: .vertical)
-//        }
 
         label.onPress { url in
             guard let url = url else { return }
