@@ -22,7 +22,7 @@ struct ExpandedMessageView: View {
             HStack {
                 VStack(alignment: .leading) {
                     
-                    AttributedLabelView(html: text, dynamicHeight: $height) { url in
+                    UniversalLabelView(html: text, dynamicHeight: $height) { url in
                         openURL(url)
                     }
                     .textFontSize(16)

@@ -32,7 +32,7 @@ struct LinkAttributes {
     var inactiveAttributes: [NSAttributedString.Key: Any]
 }
 
-struct AttributedLabelLink {
+struct UniversalLabelLink {
     var attributes: [NSAttributedString.Key: Any]
     var activeAttributes: [NSAttributedString.Key: Any]
     var inactiveAttributes: [NSAttributedString.Key: Any]
@@ -64,13 +64,13 @@ struct AttributedLabelLink {
 
 final class AttributedTextHelper {
 
-    class func concat(textsWithLinks: [AttributedTextWithLink], on label: AttributedLabel) {
+    class func concat(textsWithLinks: [AttributedTextWithLink], on label: UniversalLabel) {
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         
         let attributedText = NSMutableAttributedString(string: "", attributes: [.paragraphStyle : paragraphStyle])
-        var labelLinks = [AttributedLabelLink]()
+        var labelLinks = [UniversalLabelLink]()
 
         textsWithLinks.forEach {
             attributedText.append(NSAttributedString(
@@ -81,17 +81,17 @@ final class AttributedTextHelper {
             guard let link = $0.link, let url = URL(string: link) else { return }
 
             let range = (attributedText.string as NSString).range(of: $0.text)
-            let labelLink: AttributedLabelLink
+            let labelLink: UniversalLabelLink
 
             if let linkAttributes = $0.linkAttributes {
-                labelLink = AttributedLabelLink(
+                labelLink = UniversalLabelLink(
                     attributes: linkAttributes.attributes,
                     activeAttributes: linkAttributes.activeAttributes,
                     inactiveAttributes: linkAttributes.inactiveAttributes,
                     textCheckingResult: .linkCheckingResult(range: range, url: url)
                 )
             } else {
-                labelLink = AttributedLabelLink(
+                labelLink = UniversalLabelLink(
                     attributes: $0.attributes,
                     textCheckingResult: .linkCheckingResult(range: range, url: url)
                 )

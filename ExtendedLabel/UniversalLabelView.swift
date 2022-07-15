@@ -10,7 +10,7 @@ import SwiftUI
 
 let text = "I am informed that my personal data is being processed for the issuance and servicing of a payment card, communication in connection with the mentioned service (s), for receiving commissions and other payments, for fulfillment of the obligations specified in the agreement, providing that my rights are exercised in accordance with the Privacy Protection Rules."
 
-struct AttributedLabelView: UIViewRepresentable {
+struct UniversalLabelView: UIViewRepresentable {
     private(set) var html: String
     @Binding var dynamicHeight: CGFloat
     var action: ((URL) -> Void)
@@ -24,8 +24,8 @@ struct AttributedLabelView: UIViewRepresentable {
         var linkColor: UIColor = .blue
     }
     
-    func makeUIView(context: UIViewRepresentableContext<Self>) -> AttributedLabel {
-        let label = AttributedLabel()
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UniversalLabel {
+        let label = UniversalLabel()
         label.isUserInteractionEnabled = true
 
         label.numberOfLines = mutatingWrapper.numberOfLines
@@ -50,7 +50,7 @@ struct AttributedLabelView: UIViewRepresentable {
         return label
     }
 
-    func updateUIView(_ uiView: AttributedLabel, context: UIViewRepresentableContext<Self>) {
+    func updateUIView(_ uiView: UniversalLabel, context: UIViewRepresentableContext<Self>) {
         uiView.html = html
         uiView.numberOfLines = mutatingWrapper.numberOfLines
 

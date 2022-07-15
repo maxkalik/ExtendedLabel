@@ -2,14 +2,14 @@
 
 import UIKit
 
-protocol AttributedLabelDelegate: AnyObject {
-    func attributedLabelLinkDidPress(url: URL?)
+protocol UniversalLabelDelegate: AnyObject {
+    func universalLabelLinkDidPress(url: URL?)
 }
 
-class AttributedLabel: UILabel {
-    weak var delegate: AttributedLabelDelegate?
+class UniversalLabel: UILabel {
+    weak var delegate: UniversalLabelDelegate?
     private var tapGesture = UITapGestureRecognizer()
-    private var links: [AttributedLabelLink] = []
+    private var links: [UniversalLabelLink] = []
 
     var textFontSize: CGFloat = 13
     var linkColor: UIColor = UIColor.blue
@@ -30,7 +30,7 @@ class AttributedLabel: UILabel {
                     documentAttributes: nil
                    ) {
 
-                    var attributedLabelLinks: [AttributedTextWithLink] = []
+                    var universalLabelLinks: [AttributedTextWithLink] = []
 
                     attributedString.enumerateAttributes(in: NSRange(location: 0, length: attributedString.length), options: []) { (attributes, range, _) in
                         let string = attributedString.attributedSubstring(from: range).string
@@ -70,7 +70,7 @@ class AttributedLabel: UILabel {
                                     inactiveAttributes: linkAttributes
                                 )
                             )
-                            attributedLabelLinks.append(attributedLink)
+                            universalLabelLinks.append(attributedLink)
                         } else {
                             var defaultTextAttributes = defaultAttributes
                             defaultTextAttributes[.foregroundColor] = self.textColor
@@ -80,11 +80,11 @@ class AttributedLabel: UILabel {
                             }
 
                             let text = AttributedTextWithLink(text: string, attributes: defaultTextAttributes)
-                            attributedLabelLinks.append(text)
+                            universalLabelLinks.append(text)
                         }
                     }
 
-                    AttributedTextHelper.concat(textsWithLinks: attributedLabelLinks, on: self)
+                    AttributedTextHelper.concat(textsWithLinks: universalLabelLinks, on: self)
                 }
             }
         }
@@ -107,8 +107,8 @@ class AttributedLabel: UILabel {
 
 // MARK: - Add Link
 
-extension AttributedLabel {
-    func addLink(_ linkAttributes: AttributedLabelLink) {
+extension UniversalLabel {
+    func addLink(_ linkAttributes: UniversalLabelLink) {
         guard let attributedString = self.attributedText else { return }
         let attributedText = NSMutableAttributedString(attributedString: attributedString)
         attributedText.addAttributes(linkAttributes.attributes, range: linkAttributes.textCheckingResult.range)
@@ -119,7 +119,7 @@ extension AttributedLabel {
 
 // MARK: - Setup
 
-private extension AttributedLabel {
+private extension UniversalLabel {
     func setupCommon() {
         isUserInteractionEnabled = true
         setupTapGestureRecognizer()
@@ -131,14 +131,14 @@ private extension AttributedLabel {
         addGestureRecognizer(tapGesture)
     }
 
-    func setupAttributes(of link: AttributedLabelLink) {
+    func setupAttributes(of link: UniversalLabelLink) {
         guard let attributedString = self.attributedText else { return }
         let attributedText = NSMutableAttributedString(attributedString: attributedString)
         attributedText.addAttributes(link.attributes, range: link.textCheckingResult.range)
         self.attributedText = attributedText
     }
 
-    func setupActiveAttributes(of link: AttributedLabelLink) {
+    func setupActiveAttributes(of link: UniversalLabelLink) {
         guard let attributedString = self.attributedText else { return }
         let attributedText = NSMutableAttributedString(attributedString: attributedString)
         attributedText.addAttributes(link.activeAttributes, range: link.textCheckingResult.range)
@@ -146,16 +146,16 @@ private extension AttributedLabel {
     }
 }
 
-private extension AttributedLabel {
+private extension UniversalLabel {
     @objc func onTap(sender: UITapGestureRecognizer) {
         let touchPoint = sender.location(in: self)
         guard let link = getLinkAtPoint(touchPoint) else { return }
         let url = link.textCheckingResult.url
-        delegate?.attributedLabelLinkDidPress(url: url)
+        delegate?.universalLabelLinkDidPress(url: url)
         action?(url)
     }
 
-    func getLinkAtPoint(_ point: CGPoint) -> AttributedLabelLink? {
+    func getLinkAtPoint(_ point: CGPoint) -> UniversalLabelLink? {
         let index = indexOfAttributedTextCharacterAtPoint(point)
         return links.first { NSLocationInRange(index, $0.textCheckingResult.range) == true }
     }
@@ -184,7 +184,7 @@ private extension AttributedLabel {
 
 // MARK: - UIGestureRecognizerDelegate
 
-extension AttributedLabel: UIGestureRecognizerDelegate {
+extension UniversalLabel: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         containLinkAtPoint(touch.location(in: self))
     }
@@ -192,7 +192,7 @@ extension AttributedLabel: UIGestureRecognizerDelegate {
 
 // MARK: - Touches
 
-extension AttributedLabel {
+extension UniversalLabel {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 
         guard let touchPoint = touches.first?.location(in: self),
