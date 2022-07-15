@@ -38,8 +38,6 @@ struct AttributedLabelView: UIViewRepresentable {
         label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         
-        print(text.isHtml)
-        
 //        if label.numberOfLines != .zero {
 //            label.setContentHuggingPriority(.required, for: .vertical)
 //        }

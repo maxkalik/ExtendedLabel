@@ -194,6 +194,7 @@ extension AttributedLabel: UIGestureRecognizerDelegate {
 
 extension AttributedLabel {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+
         guard let touchPoint = touches.first?.location(in: self),
               let link = getLinkAtPoint(touchPoint) else { return }
         setupActiveAttributes(of: link)
@@ -201,16 +202,22 @@ extension AttributedLabel {
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchPoint = touches.first?.location(in: self),
-              let link = getLinkAtPoint(touchPoint) else { return }
-        setupAttributes(of: link)
+        
+//        guard let touchPoint = touches.first?.location(in: self),
+//              let link = getLinkAtPoint(touchPoint) else { return }
+//        setupAttributes(of: link)
+        links.forEach {
+            setupAttributes(of: $0)
+        }
         super.touchesEnded(touches, with: event)
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touchPoint = touches.first?.location(in: self),
-              let link = getLinkAtPoint(touchPoint) else { return }
-        setupAttributes(of: link)
+//        guard let touchPoint = touches.first?.location(in: self),
+//              let link = getLinkAtPoint(touchPoint) else { return }
+        links.forEach { setupAttributes(of: $0) }
+
+//        setupAttributes(of: link)
         super.touchesCancelled(touches, with: event)
     }
 }

@@ -23,7 +23,7 @@ struct ExpandedMessageView: View {
                 VStack(alignment: .leading) {
                     
                     AttributedLabelView(html: text, dynamicHeight: $height) { url in
-                        print(url)
+                        openURL(url)
                     }
                     .textFontSize(16)
                     .textColor(.darkGray)

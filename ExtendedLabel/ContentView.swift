@@ -8,8 +8,8 @@
 import SwiftUI
 
 let html = """
-    <h1>Hello, worlds!</h1>
-    <p>You can create an NSAttributedString directly from <a href="http://citadele.lv">HTML</a>, including support for a wide <i>range of formatting</i>, using a special <u>initializer</u> and passing in <b>NSAttributedString.DocumentType.html</b> for your document\n<a href="http://maxkalik.com">some link</a> type.</p>
+    <h1>Message Title</h1>
+    <p>The message has <a href="http://maxkalik.com">HTML link</a>. The text supports <i>italic format</i> and <u>underlined style</u> and <b>bold text</b>. All this message could be wrapped in paragraph tag and can include <a href="http://apple.com">multiple links<a/>.</p>
 """
 
 

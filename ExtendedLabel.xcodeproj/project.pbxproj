@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		37C7920A2847624300177DCD /* Testab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C792092847624200177DCD /* Testab.swift */; };
 		37F3C66D283FDC1400365B58 /* ExtendedLabelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F3C66C283FDC1400365B58 /* ExtendedLabelApp.swift */; };
 		37F3C66F283FDC1400365B58 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37F3C66E283FDC1400365B58 /* ContentView.swift */; };
 		37F3C671283FDC1600365B58 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 37F3C670283FDC1600365B58 /* Assets.xcassets */; };
@@ -19,7 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		37C792092847624200177DCD /* Testab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testab.swift; sourceTree = "<group>"; };
 		37F3C669283FDC1400365B58 /* ExtendedLabel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExtendedLabel.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		37F3C66C283FDC1400365B58 /* ExtendedLabelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendedLabelApp.swift; sourceTree = "<group>"; };
 		37F3C66E283FDC1400365B58 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -45,7 +43,6 @@
 		37F3C660283FDC1300365B58 = {
 			isa = PBXGroup;
 			children = (
-				37C792092847624200177DCD /* Testab.swift */,
 				37F3C66B283FDC1400365B58 /* ExtendedLabel */,
 				37F3C66A283FDC1400365B58 /* Products */,
 			);
@@ -163,7 +160,6 @@
 				37F3C680283FDCC300365B58 /* AttributedLabelView.swift in Sources */,
 				37F3C66F283FDC1400365B58 /* ContentView.swift in Sources */,
 				37F3C67E283FDC3F00365B58 /* AttributedHelper.swift in Sources */,
-				37C7920A2847624300177DCD /* Testab.swift in Sources */,
 				37F3C66D283FDC1400365B58 /* ExtendedLabelApp.swift in Sources */,
 				37F3C682283FDD9B00365B58 /* ExpandedMessage.swift in Sources */,
 				37F3C67D283FDC3F00365B58 /* AttributedLabel.swift in Sources */,
