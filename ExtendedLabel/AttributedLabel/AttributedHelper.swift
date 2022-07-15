@@ -8,7 +8,10 @@ struct AttributedTextWithLink {
     var link: String?
     var linkAttributes: LinkAttributes?
 
-    init(text: String, attributes: [NSAttributedString.Key: Any]) {
+    init(
+        text: String,
+        attributes: [NSAttributedString.Key: Any]
+    ) {
         self.text = text
         self.attributes = attributes
     }
@@ -50,7 +53,6 @@ struct UniversalLabelLink {
         self.textCheckingResult = textCheckingResult
     }
 
-    // Regular
     init(
         attributes: [NSAttributedString.Key: Any],
         textCheckingResult: NSTextCheckingResult
@@ -104,7 +106,7 @@ final class AttributedTextHelper {
     }
 }
 
-public extension UIFont {
+extension UIFont {
     var weight: UIFont.Weight {
         guard let weightNumber = traits[.weight] as? NSNumber else { return .regular }
         let weightRawValue = CGFloat(weightNumber.doubleValue)
@@ -119,10 +121,8 @@ public extension UIFont {
 
 extension String {
     func stripOutHtml() -> String {
-        print("*****", self, self.isHtml)
         let string = self.replacingOccurrences(of: "<br>", with: "\n")
-        
-        
+
         return string.replacingOccurrences(
             of: "<[^>]+>",
             with: "",
