@@ -32,56 +32,13 @@ class UniversalLabel: UILabel {
 
                     var universalLabelLinks: [AttributedTextWithLink] = []
 
-                    attributedString.enumerateAttributes(in: NSRange(location: 0, length: attributedString.length), options: []) { (attributes, range, _) in
-                        let string = attributedString.attributedSubstring(from: range).string
-
-                        guard let font: UIFont = attributes[NSAttributedString.Key.font] as? UIFont else { return }
-
-                        let defaultFont: UIFont
-
-                        if font.fontDescriptor.symbolicTraits.contains(.traitItalic) {
-                            defaultFont = UIFont.italicSystemFont(ofSize: self.textFontSize)
-                        } else {
-                            defaultFont = UIFont.systemFont(ofSize: self.textFontSize, weight: font.weight)
-                        }
-
-                        let paragraphStyle = NSMutableParagraphStyle()
-                        paragraphStyle.alignment = self.textAlignment
-                        
-                        let defaultAttributes: [NSAttributedString.Key: Any] = [
-                            .font: defaultFont,
-                            .paragraphStyle: paragraphStyle
-                        ]
-
-                        var linkAttributes = defaultAttributes
-                        linkAttributes[.foregroundColor] = self.linkColor
-
-                        var linkActiveAttributes = defaultAttributes
-                        linkActiveAttributes[.foregroundColor] = self.linkColor.withAlphaComponent(0.6)
-
-                        if let link = attributes[.link], let url = link as? URL {
-                            let attributedLink = AttributedTextWithLink(
-                                text: string,
-                                attributes: [:],
-                                link: url.absoluteString,
-                                linkAttributes: LinkAttributes(
-                                    attributes: linkAttributes,
-                                    activeAttributes: linkActiveAttributes,
-                                    inactiveAttributes: linkAttributes
-                                )
-                            )
-                            universalLabelLinks.append(attributedLink)
-                        } else {
-                            var defaultTextAttributes = defaultAttributes
-                            defaultTextAttributes[.foregroundColor] = self.textColor
-
-                            if let _ = attributes[NSAttributedString.Key.underlineStyle] as? Int {
-                                defaultTextAttributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
-                            }
-
-                            let text = AttributedTextWithLink(text: string, attributes: defaultTextAttributes)
-                            universalLabelLinks.append(text)
-                        }
+                    attributedString.enumerateAttributes(in: attributedString.range) { (attributes, range, _) in
+                        let attributedTextWithLink = self.prepareAttributedTextWithLinks(
+                            attributedString,
+                            attributes: attributes,
+                            range: range
+                        )
+                        universalLabelLinks.append(attributedTextWithLink)
                     }
 
                     self.concat(textsWithLinks: universalLabelLinks)
@@ -144,6 +101,68 @@ extension UniversalLabel {
 
         self.attributedText = attributedText
         labelLinks.forEach { addLink($0) }
+    }
+    
+    func prepareTextAttributes(_ attributes: [NSAttributedString.Key : Any]) -> [NSAttributedString.Key: Any] {
+        guard let font: UIFont = attributes[NSAttributedString.Key.font] as? UIFont else {
+            return attributes
+        }
+
+        let defaultFont: UIFont
+
+        if font.fontDescriptor.symbolicTraits.contains(.traitItalic) {
+            defaultFont = UIFont.italicSystemFont(ofSize: self.textFontSize)
+        } else {
+            defaultFont = UIFont.systemFont(ofSize: self.textFontSize, weight: font.weight)
+        }
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = self.textAlignment
+        
+        return [
+            .font: defaultFont,
+            .paragraphStyle: paragraphStyle
+        ]
+    }
+    
+    func prepareAttributedTextWithLinks(
+        _ attributedString: NSAttributedString,
+        attributes: [NSAttributedString.Key : Any],
+        range: NSRange
+    ) -> AttributedTextWithLink {
+        let string = attributedString.attributedSubstring(from: range).string
+
+        let textAttributes = self.prepareTextAttributes(attributes)
+        var linkAttributes = textAttributes
+        linkAttributes[.foregroundColor] = self.linkColor
+
+        var linkActiveAttributes = textAttributes
+        linkActiveAttributes[.foregroundColor] = self.linkColor.withAlphaComponent(0.6)
+        
+        if let link = attributes[.link], let url = link as? URL {
+            return AttributedTextWithLink(
+                text: string,
+                attributes: [:],
+                link: url.absoluteString,
+                linkAttributes: LinkAttributes(
+                    attributes: linkAttributes,
+                    activeAttributes: linkActiveAttributes,
+                    inactiveAttributes: linkAttributes
+                )
+            )
+        } else {
+            var defaultTextAttributes = textAttributes
+            defaultTextAttributes[.foregroundColor] = self.textColor
+
+            if let _ = attributes[NSAttributedString.Key.underlineStyle] as? Int {
+                defaultTextAttributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+            }
+
+            return AttributedTextWithLink(
+                text: string,
+                attributes: defaultTextAttributes
+            )
+        }
     }
 }
 
@@ -243,3 +262,10 @@ extension UniversalLabel {
     }
 }
 
+// MARK: - NSAttributedString
+
+extension NSAttributedString {
+    var range: NSRange {
+        NSRange(location: 0, length: length)
+    }
+}
