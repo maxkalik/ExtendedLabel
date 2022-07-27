@@ -102,6 +102,11 @@ extension UniversalLabel {
         self.attributedText = attributedText
         labelLinks.forEach { addLink($0) }
     }
+}
+
+// MARK: - Prepare Text
+
+extension UniversalLabel {
     
     func prepareTextAttributes(_ attributes: [NSAttributedString.Key : Any]) -> [NSAttributedString.Key: Any] {
         guard let font: UIFont = attributes[NSAttributedString.Key.font] as? UIFont else {
@@ -195,6 +200,8 @@ private extension UniversalLabel {
         self.attributedText = attributedText
     }
 }
+
+// MARK: - Get a link on tap
 
 private extension UniversalLabel {
     @objc func onTap(sender: UITapGestureRecognizer) {

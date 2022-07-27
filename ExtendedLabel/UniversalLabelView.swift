@@ -6,6 +6,7 @@ import SwiftUI
 let text = "I am informed that my personal data is being processed for the issuance and servicing of a payment card, communication in connection with the mentioned service (s), for receiving commissions and other payments, for fulfillment of the obligations specified in the agreement, providing that my rights are exercised in accordance with the Privacy Protection Rules."
 
 struct UniversalLabelView: UIViewRepresentable {
+    
     private(set) var html: String
     @Binding var dynamicHeight: CGFloat
     var action: ((URL) -> Void)
@@ -46,7 +47,12 @@ struct UniversalLabelView: UIViewRepresentable {
         uiView.numberOfLines = mutatingWrapper.numberOfLines
 
         DispatchQueue.main.async {
-            dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width, height: CGFloat.greatestFiniteMagnitude)).height
+            dynamicHeight = uiView.sizeThatFits(
+                CGSize(
+                    width: uiView.bounds.width,
+                    height: CGFloat.greatestFiniteMagnitude
+                )
+            ).height
         }
     }
     

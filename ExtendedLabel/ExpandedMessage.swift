@@ -6,7 +6,7 @@ struct ExpandedMessageView: View {
     var text: String
     var readMore: String
     var readLess: String
-    var closeAction: ActionBlock
+    var closeAction: (() -> Void)
 
     @Environment(\.openURL) var openURL
     @State private var isExpanded: Bool = false
