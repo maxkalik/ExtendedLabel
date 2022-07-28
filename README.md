@@ -1,5 +1,7 @@
 # Universal UILabel
 
-On some days, I got a very specific task: to make a UILabel that understands some basic HTML tags and links with tap effects, and practically it should be used with both frameworks: UIKit and SwiftUI. Eventually, this specific case should look like this:
+UILabel that handles basic HTML tags <b>, <i>, <u>, <a>, etc. The links should have normal and active states. It must work in both frameworks: UIKit and SwiftUI in the same way.
+
+📖 [article in Medium](https://medium.com/p/c00f9c1394c1)
 
 ![Universal UILabel](universal-uilabel.gif)
